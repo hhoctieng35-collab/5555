@@ -1,0 +1,522 @@
+
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dành riêng cho Huyền ❤️</title>
+
+<style>
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    overflow: hidden;
+    font-family: Arial, sans-serif;
+    color: white;
+    background: #160016;
+}
+
+#scene {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    height: 100dvh;
+    overflow: hidden;
+    background: radial-gradient(ellipse at center,
+        #581039 0%, #29001f 55%, #100014 100%);
+}
+
+.title {
+    position: absolute;
+    top: 5%;
+    width: 100%;
+    text-align: center;
+    font-size: clamp(28px, 8vw, 44px);
+    font-weight: bold;
+    color: #ffe1ef;
+    text-shadow: 0 0 12px #ff1680, 0 0 30px #ff1680;
+    animation: glow 2s infinite alternate;
+    z-index: 3;
+}
+
+@keyframes glow {
+    to {
+        text-shadow: 0 0 25px #ff1680, 0 0 45px #ff8ac2;
+    }
+}
+
+.flower {
+    position: absolute;
+    left: 50%;
+    top: 40%;
+    transform: translate(-50%, -50%);
+    font-size: clamp(100px, 28vw, 155px);
+    filter: drop-shadow(0 0 22px #ff2688);
+    animation: bloom 2s ease-out;
+    z-index: 1;
+}
+
+@keyframes bloom {
+    from {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0);
+    }
+    to {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+    }
+}
+
+.heart {
+    position: absolute;
+    left: 50%;
+    top: 40%;
+    transform: translate(-50%, -50%);
+    font-size: clamp(42px, 12vw, 65px);
+    animation: beat .85s infinite;
+    filter: drop-shadow(0 0 15px #ff1744);
+    z-index: 2;
+}
+
+@keyframes beat {
+    0%, 100% {
+        transform: translate(-50%, -50%) scale(1);
+    }
+    15% {
+        transform: translate(-50%, -50%) scale(1.3);
+    }
+    30% {
+        transform: translate(-50%, -50%) scale(1);
+    }
+    45% {
+        transform: translate(-50%, -50%) scale(1.15);
+    }
+}
+
+#rain {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+    z-index: 5;
+}
+
+/* ẢNH RƠI TỪ TRÊN XUỐNG */
+.photo {
+    position: absolute;
+    top: -200px;
+    width: 19%;
+    height: auto;
+    aspect-ratio: 3 / 4;
+    padding: 4px 4px 17px;
+    background: white;
+    border-radius: 4px;
+    object-fit: cover;
+    box-shadow: 0 0 12px #ff7dbb;
+    opacity: 0;
+    animation: rainFall linear forwards;
+    will-change: top, transform;
+}
+
+@keyframes rainFall {
+    0% {
+        top: -200px;
+        opacity: 0;
+        transform: rotate(var(--tilt));
+    }
+    8% {
+        opacity: 1;
+    }
+    92% {
+        opacity: 1;
+    }
+    100% {
+        top: 110%;
+        opacity: 0;
+        transform: rotate(var(--tilt));
+    }
+}
+
+.note {
+    position: absolute;
+    bottom: 6%;
+    left: 4%;
+    width: 92%;
+    text-align: center;
+    font-size: clamp(15px, 4.2vw, 21px);
+    line-height: 1.7;
+    color: #ffe0ef;
+    text-shadow: 0 0 12px #ff2688;
+    z-index: 3;
+}
+
+.note span {
+    color: #ffb5d7;
+    animation: glow 2s infinite alternate;
+}
+
+#startButton {
+    position: absolute;
+    top: 63%;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 13px 20px;
+    border: 1px solid #ffd6e8;
+    border-radius: 30px;
+    color: white;
+    background: #b90060;
+    font-size: 15px;
+    box-shadow: 0 0 20px #ff4f9a;
+    z-index: 10;
+    white-space: nowrap;
+}
+
+.firework {
+    position: absolute;
+    z-index: 8;
+    pointer-events: none;
+    font-size: 25px;
+    animation: burst 1.3s forwards;
+}
+
+@keyframes burst {
+    0% {
+        opacity: 0;
+        transform: scale(.2);
+    }
+    20% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+        transform: scale(2.5) rotate(90deg);
+    }
+}
+
+.sparkle {
+    position: absolute;
+    bottom: -20px;
+    color: #ffd0e8;
+    animation: floatUp 6s linear forwards;
+    pointer-events: none;
+    z-index: 2;
+}
+
+@keyframes floatUp {
+    to {
+        transform: translateY(-110vh);
+        opacity: 0;
+    }
+}
+
+/* CẢNH CUỐI */
+#finalScene {
+    position: absolute;
+    inset: 0;
+    z-index: 20;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 22px;
+    overflow-y: auto;
+    text-align: center;
+    background: rgba(22, 0, 22, .96);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 1.5s;
+}
+
+#finalScene.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+.finalTitle {
+    color: #ffd9e9;
+    font-size: clamp(25px, 7vw, 34px);
+    text-shadow: 0 0 18px #ff2688;
+    margin-bottom: 18px;
+}
+
+.myPhotoFrame {
+    width: min(55vw, 220px);
+    aspect-ratio: 1;
+    padding: 6px;
+    margin-bottom: 20px;
+    border: 2px solid #ff9acb;
+    border-radius: 50%;
+    box-shadow: 0 0 25px #ff2688;
+    animation: frameGlow 1.5s infinite alternate;
+}
+
+.myPhotoFrame img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+@keyframes frameGlow {
+    to {
+        box-shadow: 0 0 40px #ff2688, 0 0 60px #ff8ac2;
+    }
+}
+
+.finalHeart {
+    font-size: 35px;
+    animation: beat .85s infinite;
+    margin-bottom: 12px;
+}
+
+.loveMessage {
+    max-width: 440px;
+    font-size: clamp(15px, 4vw, 18px);
+    line-height: 1.8;
+    color: #ffe4f0;
+}
+
+.loveMessage strong {
+    display: block;
+    font-size: 1.15em;
+    color: #ffacd3;
+    margin-bottom: 8px;
+}
+
+.signature {
+    margin-top: 12px;
+    color: #ffb8d9;
+    font-style: italic;
+}
+</style>
+</head>
+
+<body>
+<div id="scene">
+
+    <div class="title">Huyền ❤️</div>
+    <div class="flower">🌹</div>
+    <div class="heart">❤️</div>
+
+    <div id="rain"></div>
+
+    <button id="startButton" onclick="startLove()">
+        Chạm vào đây nhé, Huyền 💌
+    </button>
+
+    <div class="note">
+        <span>Dành riêng cho em, Huyền 💗</span><br>
+        Mong rằng mỗi ngày bên nhau<br>
+        đều là một kỷ niệm thật đẹp.
+    </div>
+
+    <div id="finalScene">
+        <div class="finalTitle">Huyền à, ❤️</div>
+
+        <div class="myPhotoFrame">
+            <img src="anh8.jpg" alt="Ảnh của anh"
+                 onerror="this.style.opacity='0'">
+        </div>
+
+        <div class="finalHeart">❤️</div>
+
+        <div class="loveMessage">
+            <strong>Anh yêu em bằng sự chân thành 💗</strong>
+
+            Anh không hứa sẽ cho em tất cả những điều tốt đẹp nhất,
+            nhưng anh sẽ cố gắng để trở thành người khiến em cảm thấy
+            được yêu thương và trân trọng.
+
+            <br><br>
+
+            Anh muốn cùng em đi qua những ngày bình thường,
+            cùng cười khi vui, cùng động viên nhau lúc khó khăn,
+            và cùng tạo nên thật nhiều kỷ niệm đẹp.
+
+            <br><br>
+
+            Anh không cần tình yêu phải hoàn hảo.
+            Anh chỉ mong cả hai luôn chân thành, biết lắng nghe
+            và cùng nhau cố gắng.
+
+            <div class="signature">
+                Thương em thật lòng, Huyền ❤️
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script>
+const rain = document.getElementById("rain");
+const scene = document.getElementById("scene");
+const finalScene = document.getElementById("finalScene");
+
+const photos = [
+    "anh1.jpg",
+    "anh2.jpg",
+    "anh3.jpg",
+    "anh4.jpg",
+    "anh5.jpg",
+    "anh6.jpg",
+    "anh7.jpg"
+];
+
+/*
+  4 làn ảnh riêng biệt.
+  Mỗi làn chỉ có tối đa 1 ảnh đang rơi.
+*/
+const lanes = [2, 27, 52, 77];
+const laneBusy = [false, false, false, false];
+
+let started = false;
+let nextPhoto = 0;
+let rainTimer = null;
+let sparkleTimer = null;
+let finalTimer = null;
+let fireworksTimer = null;
+
+function createFirework() {
+    const fw = document.createElement("div");
+    fw.className = "firework";
+
+    const symbols = ["🎆", "✨", "💖", "🎇", "🌟"];
+    fw.textContent = symbols[
+        Math.floor(Math.random() * symbols.length)
+    ];
+
+    fw.style.left = (5 + Math.random() * 90) + "%";
+    fw.style.top = (8 + Math.random() * 48) + "%";
+
+    scene.appendChild(fw);
+    setTimeout(() => fw.remove(), 1400);
+}
+
+function createSparkle() {
+    const s = document.createElement("div");
+    s.className = "sparkle";
+    s.textContent = Math.random() > 0.5 ? "✦" : "♥";
+    s.style.left = Math.random() * 96 + "%";
+    s.style.fontSize = (10 + Math.random() * 13) + "px";
+
+    scene.appendChild(s);
+    setTimeout(() => s.remove(), 6000);
+}
+
+function dropOnePhoto() {
+    if (!started || finalScene.classList.contains("show")) return;
+
+    // Chọn ngẫu nhiên một làn đang trống
+    const available = laneBusy
+        .map((busy, index) => busy ? -1 : index)
+        .filter(index => index !== -1);
+
+    if (available.length === 0) return;
+
+    const lane = available[
+        Math.floor(Math.random() * available.length)
+    ];
+
+    laneBusy[lane] = true;
+
+    // 7 ảnh khác nhau sẽ được lặp lại theo thứ tự
+    const src = photos[nextPhoto];
+    nextPhoto = (nextPhoto + 1) % photos.length;
+
+    const img = document.createElement("img");
+    img.className = "photo";
+    img.src = src;
+    img.alt = "Kỷ niệm của Huyền";
+
+    img.style.left = lanes[lane] + "%";
+
+    const duration = 8 + Math.random() * 2;
+    img.style.animationDuration = duration + "s";
+    img.style.setProperty(
+        "--tilt",
+        (Math.random() * 12 - 6) + "deg"
+    );
+
+    let released = false;
+
+    function releaseLane() {
+        if (released) return;
+        released = true;
+        laneBusy[lane] = false;
+        img.remove();
+    }
+
+    img.onerror = releaseLane;
+    img.addEventListener("animationend", releaseLane, { once: true });
+
+    rain.appendChild(img);
+
+    // Đề phòng ảnh không phát ra sự kiện kết thúc animation
+    setTimeout(releaseLane, duration * 1000 + 500);
+}
+
+function scheduleRain() {
+    if (!started || finalScene.classList.contains("show")) return;
+
+    dropOnePhoto();
+
+    // Khoảng cách giữa các ảnh không cố định, tạo cảm giác như mưa
+    const delay = 500 + Math.random() * 1000;
+    rainTimer = setTimeout(scheduleRain, delay);
+}
+
+function startLove() {
+    if (started) return;
+    started = true;
+
+    document.getElementById("startButton").style.display = "none";
+
+    // Pháo hoa mở đầu
+    let count = 0;
+
+    fireworksTimer = setInterval(() => {
+        createFirework();
+        createFirework();
+        count++;
+
+        if (count >= 12) {
+            clearInterval(fireworksTimer);
+
+            // Bắt đầu mưa ảnh sau pháo hoa
+            scheduleRain();
+            sparkleTimer = setInterval(createSparkle, 650);
+
+            // Chuyển cảnh sau 30 giây
+            finalTimer = setTimeout(showFinalScene, 30000);
+        }
+    }, 350);
+}
+
+function showFinalScene() {
+    clearTimeout(rainTimer);
+    clearInterval(sparkleTimer);
+
+    // Xóa ảnh rơi và giải phóng các làn
+    rain.innerHTML = "";
+    laneBusy.fill(false);
+
+    finalScene.classList.add("show");
+
+    // Pháo hoa ở cảnh tỏ tình
+    let count = 0;
+
+    const finalFireworks = setInterval(() => {
+        createFirework();
+        count++;
+
+        if (count >= 15) {
+            clearInterval(finalFireworks);
+        }
+    }, 450);
+}
+</script>
+</body>
+</html>
